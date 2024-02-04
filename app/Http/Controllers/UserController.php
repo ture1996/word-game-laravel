@@ -16,23 +16,30 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    private function checkUser($id)
+    {
+        if ($id != Auth::user()->id) {
+            throw new Exception("Not allowed!");
+        };
+    }
+
     public function index()
     {
-        return User::all();
+        return User::select('nick_name', 'personal_best')->orderBy('personal_best', 'DESC')->get();
     }
 
     public function show($id)
     {
-        return User::with('game')->findOrFail($id);
+        $this->checkUser($id);
+
+        return User::findOrFail($id);
     }
 
     public function update($id, UserRequest $request)
     {
         // dd();
 
-        if ($id != Auth::user()->id) {
-            throw new Exception("Not allowed!");
-        };
+        $this->checkUser($id);
 
         $wordToCheck = $request->word;
         $game = Auth::user()->game;
@@ -85,6 +92,8 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        $this->checkUser($id);
+
         return User::destroy($id);
     }
 }
