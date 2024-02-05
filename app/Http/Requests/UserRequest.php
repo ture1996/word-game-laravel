@@ -21,6 +21,9 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        //user can only change his nick_name and game status
+
         return [
             'first_name' => 'prohibited',
             'last_name' => 'prohibited',
