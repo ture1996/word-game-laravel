@@ -28,6 +28,7 @@ class UserRequest extends FormRequest
             'password' => 'prohibited',
             'nick_name' => 'string|max:25|unique:users',
             'word' => 'string',
+            'is_ongoing' => 'boolean',
             'game.score' => 'prohibited',
             'game.words' => 'prohibited',
             'game.attempts_remaining' => 'prohibited',

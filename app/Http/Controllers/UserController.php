@@ -37,17 +37,39 @@ class UserController extends Controller
 
     public function update($id, UserRequest $request)
     {
-        // dd();
 
         $this->checkUser($id);
 
-        $wordToCheck = $request->word;
+        if (empty($request->all())) {
+            throw new Exception("You must enter a word!");
+        }
+
         $game = Auth::user()->game;
         $newGame = [
+            'is_ongoing' => false,
             'score' => 0,
             'words' => [],
             'attempts_remaining' => 3
         ];
+
+        if (isset($request->is_ongoing)) {
+            $game['is_ongoing'] = true;
+            return User::findOrFail($id)->update(['game' => $request->is_ongoing ? $game : $newGame]);
+        }
+
+        if (!$game['is_ongoing'] && isset($request->word)) {
+            throw new Exception("You need to start game!");
+        }
+
+        if (!$game['is_ongoing'] && isset($request->nick_name)) {
+            return User::findOrFail($id)->update(['nick_name' => $request->nick_name]);
+        }
+
+        if ($game['is_ongoing' && isset($request->nick_name)]) {
+            throw new Exception("Can't change nick name while in game!");
+        }
+
+        $wordToCheck = $request->word;
 
         $languageDetector = new Language();
         $language = $languageDetector->detect($wordToCheck)->close();

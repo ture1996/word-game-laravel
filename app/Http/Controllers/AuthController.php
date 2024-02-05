@@ -52,6 +52,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'personal_best' => 0,
             'game' => [
+                'is_ongoing' => false,
                 'score' => 0,
                 'attempts_remaining' => 3,
                 'words' => []
@@ -59,9 +60,15 @@ class AuthController extends Controller
 
         ]);
 
+        $token = Auth::login($user);
+
         return response()->json([
             'message' => 'User created successfully',
-            'user' => $user
+            'user' => $user,
+            'authorization' => [
+                'token' => $token,
+                'type' => 'bearer',
+            ],
         ]);
     }
 
