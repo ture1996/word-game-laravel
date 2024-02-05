@@ -28,6 +28,7 @@ class UserController extends Controller
         return User::select('nick_name', 'personal_best')->orderBy('personal_best', 'DESC')->get();
     }
 
+
     public function show($id)
     {
         $this->checkUser($id);
