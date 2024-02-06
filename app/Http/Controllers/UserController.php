@@ -138,8 +138,8 @@ class UserController extends Controller
                     if (isPalindrome($wordWithoutOneChar)) {
                         return true;
                     };
-                    return false;
                 }
+                return false;
             }
 
             //if word is palindrome user will get extra 3 points
