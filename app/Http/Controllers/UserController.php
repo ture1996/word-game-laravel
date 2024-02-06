@@ -101,7 +101,7 @@ class UserController extends Controller
         //if word is on English language with probability less then 40%
         //in that case attempts_remaining are subtracted by 1
 
-        if (in_array($wordToCheck, Auth::user()->game['words']) || (in_array('en', $language) && $language['en'] < 0.4) || preg_match('~[0-9]+~', $wordToCheck)) {
+        if (in_array($wordToCheck, Auth::user()->game['words']) || (in_array('en', array_keys($language)) && $language['en'] < 0.4) || preg_match('~[0-9]+~', $wordToCheck)) {
             $game['attempts_remaining']--;
 
             //if user don't have more attempts game will stop
